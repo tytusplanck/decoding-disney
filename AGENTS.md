@@ -67,6 +67,8 @@ npm run verify
 - `build`: static generation must succeed.
 - `test:artifacts`: required `dist` files/routes/feed/sitemap must exist and include all posts.
 - `test:smoke`: rendered output smoke checks for home/posts/feed/sitemap/404.
+- `test:links`: internal link integrity checks against built HTML.
+- `test:seo`: metadata regressions for canonical tags, OG tags, JSON-LD, robots, and manifest.
 
 ## Content Editing Rules
 
@@ -78,10 +80,22 @@ When editing posts, agents must preserve schema validity:
   - `date`
   - `author.name`
   - `coverImage` (colocated image path in markdown frontmatter)
+- Optional but supported frontmatter:
+  - `updatedDate`
+  - `draft`
+  - `keywords`
+  - `ogImage.url` (+ optional `width` and `height`)
 - Keep slug folder structure consistent.
 - Keep a valid `cover.jpg` in each post folder.
+- Start post section headings at `##` (do not jump from title directly to `###`).
 
 If content changes were not requested, do not rewrite article voice or messaging.
+
+## Publishing Behavior
+
+- Posts with `draft: true` must never appear in generated routes, feed, or sitemap.
+- Agents must treat draft leakage as a blocking defect.
+- Home/share fallback OG image is `/og/default-og.svg`; do not point OG defaults to favicon assets.
 
 ## Commit Guardrails
 

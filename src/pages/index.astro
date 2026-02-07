@@ -1,14 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { getCollection } from 'astro:content'
+import { getAllPostsSorted } from '../lib/posts'
 
-const posts = (await getCollection('posts')).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
-)
+const posts = await getAllPostsSorted()
 ---
 
 <BaseLayout title="Decoding Disney" showHeader={false}>
-  <main class="min-h-screen flex flex-col">
+  <main id="main-content" class="min-h-screen flex flex-col">
     <section class="flex flex-col items-start justify-center w-full min-h-screen p-4 md:p-8">
       <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">Decoding Disney.</h1>
       <h2 class="text-lg md:text-xl text-gray-700">

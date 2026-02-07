@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Decoding Disney</title>
+  <desc id="desc">Disney travel tips and guides for families</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1030" cy="110" r="140" fill="#60a5fa" opacity="0.2" />
+  <circle cx="140" cy="540" r="180" fill="#93c5fd" opacity="0.15" />
+  <text x="90" y="280" fill="#f8fafc" font-family="Georgia, serif" font-size="84" font-weight="700">
+    Decoding Disney
+  </text>
+  <text x="90" y="350" fill="#dbeafe" font-family="Arial, sans-serif" font-size="36">
+    Park-tested tips, tricks, and planning insights
+  </text>
+</svg>

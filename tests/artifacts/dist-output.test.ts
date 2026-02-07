@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { getPostSlugs } from '../helpers/content'
+import { getDraftSlugs, getPostSlugs } from '../helpers/content'
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist')
 
@@ -39,6 +39,20 @@ describe('build artifacts', () => {
       const route = `/posts/${slug}`
       expect(rss).toContain(route)
       expect(sitemap).toContain(route)
+    }
+  })
+
+  it('excludes draft posts from generated routes and feeds', () => {
+    const draftSlugs = getDraftSlugs()
+    const rss = readFileSync(path.join(DIST_DIR, 'feed.xml'), 'utf8')
+    const sitemap = readFileSync(path.join(DIST_DIR, 'sitemap-0.xml'), 'utf8')
+
+    for (const slug of draftSlugs) {
+      const route = `/posts/${slug}`
+      const outputPath = path.join(DIST_DIR, 'posts', slug, 'index.html')
+      expect(existsSync(outputPath)).toBe(false)
+      expect(rss).not.toContain(route)
+      expect(sitemap).not.toContain(route)
     }
   })
 })

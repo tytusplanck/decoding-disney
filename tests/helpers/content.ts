@@ -6,6 +6,8 @@ interface PostData {
   title?: unknown
   excerpt?: unknown
   date?: unknown
+  updatedDate?: unknown
+  draft?: unknown
   author?: unknown
   keywords?: unknown
   ogImage?: unknown
@@ -48,4 +50,11 @@ export function getParsedPosts(): ParsedPost[] {
       data: parsed.data as PostData,
     }
   })
+}
+
+export function getDraftSlugs(): string[] {
+  return getParsedPosts()
+    .filter((post) => post.data.draft === true)
+    .map((post) => post.slug)
+    .sort()
 }

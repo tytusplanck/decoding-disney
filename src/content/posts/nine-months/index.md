@@ -9,7 +9,7 @@ coverImage: ./cover.jpg
 
 Click bait title I know… but a common argument online when it comes to planning a vacation to Disney World with young kids. The answer is honestly not black and white, and truthfully a lot of it depends on what you’re willing to do. I personally took my nine-month-old on a trip and I’m here to give you all the reasons you might want and not want to take your little one to a Disney park!
 
-### Top Reasons to Take Your Little One
+## Top Reasons to Take Your Little One
 
 1. **Free Admission for Kids Under Three**: The big benefit is children under three receive free admission to Disney parks. Given how expensive a Disney vacation can be, this is an awesome perk, and one that my family has personally leveraged quite a bit during the first few years of our son's life. It’s been super fun to build our son’s excitement for going to Disney over the few trips we’ve done in his early years. He already knows and loves the experience!
 
@@ -19,7 +19,7 @@ Click bait title I know… but a common argument online when it comes to plannin
 
 4. **Home of Toddler-Friendly Rides**: Disney is known for family-friendly attractions and even babies under one can ride an absurd amount at Disney. We have countless ride pictures of our son looking totally mesmerized by Winnie the Pooh and It's a Small World at nine months!
 
-### Top Reasons Not to Take Your Little One
+## Top Reasons Not to Take Your Little One
 
 1. **They Won't Remember It**: The reality is, they probably won’t remember a thing. Going to Disney is a massive financial investment, so if this is a big reason not to go for your family, that makes total sense! For us, we were really doing it for my wife and me. We wanted the memories and pictures of taking him to Disney at that young age.
 
@@ -27,6 +27,6 @@ Click bait title I know… but a common argument online when it comes to plannin
 
 3. **Parent Exhaustion**: The combination of heat, crowds, and baby care can leave parents exhausted. This won't be your typical rope-drop-to-fireworks type of trip. You'll definitely want to take breaks throughout the day, whether back at your resort or in the parks. This can sometimes lead people to think, "Why did I even come?" This is an important perspective to consider before committing to a trip with a nine-month-old.
 
-### What Should You Do?
+## What Should You Do?
 
 The simple answer is—do whatever works for your family. For us, we are massive Disney fans and love going to the parks. It was important for us to have those early memories with our son that we can fondly look back on. Him being free and not requiring a ticket for our flights made the decision that much easier.

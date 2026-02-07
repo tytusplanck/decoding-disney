@@ -2,33 +2,47 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import PostTitle from '../../components/PostTitle.astro'
 import DateFormatter from '../../components/DateFormatter.astro'
-import { getCollection, type CollectionEntry } from 'astro:content'
 import { Image } from 'astro:assets'
+import { getAllPostsSorted, getPostBySlug } from '../../lib/posts'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts')
+  const posts = await getAllPostsSorted()
   return posts.map((post) => ({ params: { slug: post.slug } }))
 }
 
 const { slug } = Astro.params
-const allPosts = await getCollection('posts')
-const entry = slug ? allPosts.find((post) => post.slug === slug) : undefined
+const entry = slug ? await getPostBySlug(slug) : undefined
 if (!entry) {
   throw new Error('Post not found')
 }
 
 const { Content } = await entry.render()
-const { data } = entry satisfies CollectionEntry<'posts'>
+const { data } = entry
 const pageTitle = `${data.title} | Decoding Disney`
-const ogImage = Astro.site
-  ? new URL(data.coverImage.src, Astro.site).toString()
-  : data.coverImage.src
+
+function resolveAbsoluteUrl(url: string): string {
+  return Astro.site ? new URL(url, Astro.site).toString() : url
+}
+
+const ogImage = data.ogImage?.url
+  ? resolveAbsoluteUrl(data.ogImage.url)
+  : resolveAbsoluteUrl(data.coverImage.src)
+const ogImageWidth = data.ogImage?.url ? data.ogImage.width : 512
+const ogImageHeight = data.ogImage?.url ? data.ogImage.height : 512
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : Astro.url.pathname
+const modifiedDate = data.updatedDate ?? data.date
+
 const structuredData = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: data.title,
+  description: data.excerpt,
   datePublished: data.date.toISOString(),
+  dateModified: modifiedDate.toISOString(),
   image: ogImage,
+  mainEntityOfPage: canonicalUrl,
   author: data.author?.name ? { '@type': 'Person', name: data.author.name } : undefined,
 })
 ---
@@ -36,11 +50,16 @@ const structuredData = JSON.stringify({
 <BaseLayout
   title={pageTitle}
   description={data.excerpt}
+  keywords={data.keywords}
   type="article"
   ogImage={ogImage}
+  ogImageWidth={ogImageWidth}
+  ogImageHeight={ogImageHeight}
   publishedTime={data.date.toISOString()}
+  modifiedTime={modifiedDate.toISOString()}
+  authorName={data.author.name}
 >
-  <main>
+  <main id="main-content">
     <div class="container mx-auto px-5">
       <article class="mb-32">
         <div class="mb-8 md:mb-16 sm:mx-0 flex justify-center">

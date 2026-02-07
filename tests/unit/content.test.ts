@@ -26,6 +26,16 @@ describe('content invariants', () => {
       const parsedDate = new Date(post.data.date as string | Date)
       expect(Number.isNaN(parsedDate.getTime())).toBe(false)
 
+      if (post.data.updatedDate !== undefined) {
+        const updatedDate = new Date(post.data.updatedDate as string | Date)
+        expect(Number.isNaN(updatedDate.getTime())).toBe(false)
+        expect(updatedDate.getTime()).toBeGreaterThanOrEqual(parsedDate.getTime())
+      }
+
+      if (post.data.draft !== undefined) {
+        expect(typeof post.data.draft).toBe('boolean')
+      }
+
       expect(typeof post.data.author).toBe('object')
       expect(post.data.author).not.toBeNull()
       expect(asNonEmptyString((post.data.author as { name?: unknown }).name)).toBe(true)
