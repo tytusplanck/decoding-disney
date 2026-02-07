@@ -20,8 +20,19 @@ if (!entry) {
 const { Content } = await entry.render()
 const { data } = entry satisfies CollectionEntry<'posts'>
 const pageTitle = `${data.title} | Decoding Disney`
-const ogImage = Astro.site ? new URL(data.coverImage.src, Astro.site).toString() : data.coverImage.src
+const ogImage = Astro.site
+  ? new URL(data.coverImage.src, Astro.site).toString()
+  : data.coverImage.src
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  datePublished: data.date.toISOString(),
+  image: ogImage,
+  author: data.author?.name ? { '@type': 'Person', name: data.author.name } : undefined,
+})
 ---
+
 <BaseLayout
   title={pageTitle}
   description={data.excerpt}
@@ -34,7 +45,13 @@ const ogImage = Astro.site ? new URL(data.coverImage.src, Astro.site).toString()
       <article class="mb-32">
         <div class="mb-8 md:mb-16 sm:mx-0 flex justify-center">
           <div class="h-[512px] w-[512px]">
-            <Image src={data.coverImage} alt={`Cover Image for ${data.title}`} class="shadow-sm w-full" width={512} height={512} />
+            <Image
+              src={data.coverImage}
+              alt={`Cover Image for ${data.title}`}
+              class="shadow-sm w-full"
+              width={512}
+              height={512}
+            />
           </div>
         </div>
         <div class="flex justify-center">
@@ -49,16 +66,5 @@ const ogImage = Astro.site ? new URL(data.coverImage.src, Astro.site).toString()
       </article>
     </div>
   </main>
-  <script type="application/ld+json" is:inline>
-    {JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: data.title,
-      datePublished: data.date.toISOString(),
-      image: ogImage,
-      author: data.author?.name
-        ? { '@type': 'Person', name: data.author.name }
-        : undefined,
-    })}
-  </script>
+  <script type="application/ld+json" is:inline set:html={structuredData} />
 </BaseLayout>

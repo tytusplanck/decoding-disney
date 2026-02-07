@@ -2,26 +2,39 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
 
-const posts = (await getCollection('posts')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+)
 ---
+
 <BaseLayout title="Decoding Disney" showHeader={false}>
   <main class="min-h-screen flex flex-col">
     <section class="flex flex-col items-start justify-center w-full min-h-screen p-4 md:p-8">
       <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">Decoding Disney.</h1>
       <h2 class="text-lg md:text-xl text-gray-700">
-        Join me as I share <strong>tips</strong>, <strong>tricks</strong>, and <strong>insights</strong> to help you make the most of your Disney vacations. Together, we'll <em class="italic">decode</em> the secrets of Disney World and create <em class="font-semibold">magical experiences</em> for everyone.
+        Join me as I share <strong>tips</strong>, <strong>tricks</strong>, and <strong
+          >insights</strong
+        > to help you make the most of your Disney vacations. Together, we'll <em class="italic"
+          >decode</em
+        > the secrets of Disney World and create <em class="font-semibold">magical experiences</em> for
+        everyone.
       </h2>
 
       <div class="flex flex-col items-start text-left w-full mt-16">
         <h3 class="text-lg md:text-xl font-bold mb-4 text-gray-900">Latest articles &#128071;</h3>
         <ul class="flex flex-col space-y-4 w-full">
-          {posts.map((post) => (
-            <li>
-              <a href={`/posts/${post.slug}`} class="text-md md:text-lg font-semibold text-gray-600 hover:text-blue-900 transition-colors">
-                {post.data.title}
-              </a>
-            </li>
-          ))}
+          {
+            posts.map((post) => (
+              <li>
+                <a
+                  href={`/posts/${post.slug}`}
+                  class="text-md md:text-lg font-semibold text-gray-600 hover:text-blue-900 transition-colors"
+                >
+                  {post.data.title}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </section>

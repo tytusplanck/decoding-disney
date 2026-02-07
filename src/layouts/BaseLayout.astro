@@ -1,8 +1,8 @@
 ---
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
-import Analytics from '@vercel/analytics/astro';
-import SpeedInsights from '@vercel/speed-insights/astro';
+import Analytics from '@vercel/analytics/astro'
+import SpeedInsights from '@vercel/speed-insights/astro'
 import '../styles/global.css'
 import '../styles/markdown.css'
 
@@ -29,7 +29,8 @@ const {
 } = Astro.props as Props
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined
 ---
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -60,7 +61,7 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toStri
     <meta name="msapplication-TileColor" content="#000000" />
     <meta name="theme-color" content="#000" />
     <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-    <Analytics mode="production"/>
+    <Analytics mode="production" />
     <SpeedInsights />
   </head>
   <body class="min-h-screen">

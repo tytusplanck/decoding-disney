@@ -10,4 +10,5 @@ const formatted = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
 }).format(date)
 ---
+
 <time datetime={date.toISOString()}>{formatted}</time>
