@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { getParsedPosts } from '../helpers/content'
+import { getPublishedPosts } from '../helpers/content'
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist')
 const SITE_URL = 'https://decodingdisney.com'
@@ -88,7 +88,7 @@ describe('seo metadata regression checks', () => {
   })
 
   it('renders canonical, article, and structured metadata on post pages', () => {
-    for (const post of getParsedPosts()) {
+    for (const post of getPublishedPosts()) {
       const postHtml = readFileSync(path.join(DIST_DIR, 'posts', post.slug, 'index.html'), 'utf8')
       const canonical = findCanonicalHref(postHtml)
       const description = findMetaContent(postHtml, 'name', 'description')

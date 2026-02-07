@@ -54,6 +54,7 @@ npm run verify
 - `lint:code`: ESLint for Astro/TypeScript code.
 - `lint:md`: markdownlint for:
   - `README.md`
+  - `AGENTS.md`
   - `src/content/posts/**/*.md`
   - `.github/**/*.md`
 

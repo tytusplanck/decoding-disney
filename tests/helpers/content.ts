@@ -58,3 +58,13 @@ export function getDraftSlugs(): string[] {
     .map((post) => post.slug)
     .sort()
 }
+
+export function getPublishedPosts(): ParsedPost[] {
+  return getParsedPosts().filter((post) => post.data.draft !== true)
+}
+
+export function getPublishedSlugs(): string[] {
+  return getPublishedPosts()
+    .map((post) => post.slug)
+    .sort()
+}

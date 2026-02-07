@@ -14,7 +14,7 @@ npm run dev
 - `npm run dev` – Start the Astro dev server on [http://localhost:4321](http://localhost:4321)
 - `npm run lint` – Run code lint + markdown content lint
 - `npm run lint:code` – Run ESLint across Astro/TypeScript files
-- `npm run lint:md` – Run markdownlint on README, posts, and `.github` markdown docs
+- `npm run lint:md` – Run markdownlint on `README.md`, `AGENTS.md`, posts, and `.github` docs
 - `npm run lint:fix` – Auto-fix lint issues where possible
 - `npm run format` – Format the repo with Prettier
 - `npm run format:check` – Validate formatting without changing files
@@ -23,7 +23,7 @@ npm run dev
 - `npm run test:smoke` – Smoke-check rendered routes in `dist/`
 - `npm run test:links` – Validate internal links in built HTML
 - `npm run test:seo` – Verify canonical/OG/JSON-LD/robots/manifest metadata in `dist/`
-- `npm run test:all` – Run unit tests, build, artifact tests, smoke tests, link checks, and SEO tests
+- `npm run test:all` – Run unit tests, build, then all post-build test suites
 - `npm run check` – Type-check and validate content collections
 - `npm run build` – Generate the production build in `dist/`
 - `npm run preview` – Preview the production build locally
@@ -31,7 +31,7 @@ npm run dev
 
 ## Quality Gate
 
-Run `npm run verify` before opening or updating a PR. Vercel also runs the same command during builds via `vercel.json` (`buildCommand: "npm run verify"`), so deploys fail on lint, formatting, Astro check, unit regressions, route smoke failures, or broken build artifacts.
+Run `npm run verify` before handoff or deployment. Vercel also runs the same command during builds via `vercel.json` (`buildCommand: "npm run verify"`), so deploys fail on lint, formatting, Astro check, unit regressions, route smoke failures, link breakage, SEO regressions, or broken build artifacts.
 
 ## Pre-commit Guardrail
 

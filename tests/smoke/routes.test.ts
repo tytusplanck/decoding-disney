@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { getParsedPosts } from '../helpers/content'
+import { getPublishedPosts } from '../helpers/content'
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist')
 
@@ -13,7 +13,7 @@ describe('rendered route smoke checks', () => {
   })
 
   it('renders each post page with its title', () => {
-    for (const post of getParsedPosts()) {
+    for (const post of getPublishedPosts()) {
       const outputPath = path.join(DIST_DIR, 'posts', post.slug, 'index.html')
       expect(existsSync(outputPath)).toBe(true)
       const html = readFileSync(outputPath, 'utf8')

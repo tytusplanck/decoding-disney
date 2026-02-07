@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { getDraftSlugs, getPostSlugs } from '../helpers/content'
+import { getDraftSlugs, getPublishedSlugs } from '../helpers/content'
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist')
 
@@ -24,18 +24,18 @@ describe('build artifacts', () => {
     }
   })
 
-  it('generates a static HTML page for every post slug', () => {
-    for (const slug of getPostSlugs()) {
+  it('generates a static HTML page for every published post slug', () => {
+    for (const slug of getPublishedSlugs()) {
       const outputPath = path.join(DIST_DIR, 'posts', slug, 'index.html')
       expect(existsSync(outputPath)).toBe(true)
     }
   })
 
-  it('includes every post in RSS and sitemap', () => {
+  it('includes every published post in RSS and sitemap', () => {
     const rss = readFileSync(path.join(DIST_DIR, 'feed.xml'), 'utf8')
     const sitemap = readFileSync(path.join(DIST_DIR, 'sitemap-0.xml'), 'utf8')
 
-    for (const slug of getPostSlugs()) {
+    for (const slug of getPublishedSlugs()) {
       const route = `/posts/${slug}`
       expect(rss).toContain(route)
       expect(sitemap).toContain(route)
