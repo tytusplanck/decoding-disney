@@ -11,8 +11,10 @@ npm run dev
 
 ## Useful Scripts
 
-- `npm run dev` – Start the Astro dev server on http://localhost:4321
-- `npm run lint` – Run ESLint across Astro/TypeScript files
+- `npm run dev` – Start the Astro dev server on [http://localhost:4321](http://localhost:4321)
+- `npm run lint` – Run code lint + markdown content lint
+- `npm run lint:code` – Run ESLint across Astro/TypeScript files
+- `npm run lint:md` – Run markdownlint on README, posts, and PR templates
 - `npm run lint:fix` – Auto-fix lint issues where possible
 - `npm run format` – Format the repo with Prettier
 - `npm run format:check` – Validate formatting without changing files
