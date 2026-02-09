@@ -2,9 +2,20 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { getPublishedPosts } from '../helpers/content'
+import {
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_PATH,
+  DEFAULT_OG_IMAGE_WIDTH,
+  SITE_NAME,
+  SITE_ORIGIN,
+} from '../../src/lib/site'
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist')
-const SITE_URL = 'https://decodingdisney.com'
+const ASTRO_CONFIG_PATH = path.resolve(process.cwd(), 'astro.config.mjs')
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
 
 function parseAttributes(tag: string): Map<string, string> {
   const attributes = new Map<string, string>()
@@ -79,11 +90,11 @@ describe('seo metadata regression checks', () => {
     const ogImageHeight = findMetaContent(homeHtml, 'property', 'og:image:height')
     const twitterImage = findMetaContent(homeHtml, 'name', 'twitter:image')
 
-    expect(canonical).toBe(`${SITE_URL}/`)
+    expect(canonical).toBe(`${SITE_ORIGIN}/`)
     expect(ogUrl).toBe(canonical)
-    expect(ogImage).toBe(`${SITE_URL}/og/default-og.svg`)
-    expect(ogImageWidth).toBe('1200')
-    expect(ogImageHeight).toBe('630')
+    expect(ogImage).toBe(new URL(DEFAULT_OG_IMAGE_PATH, SITE_ORIGIN).toString())
+    expect(ogImageWidth).toBe(String(DEFAULT_OG_IMAGE_WIDTH))
+    expect(ogImageHeight).toBe(String(DEFAULT_OG_IMAGE_HEIGHT))
     expect(twitterImage).toBe(ogImage)
   })
 
@@ -103,13 +114,17 @@ describe('seo metadata regression checks', () => {
       expect(canonical?.includes(`/posts/${post.slug}`)).toBe(true)
       expect(ogUrl).toBe(canonical)
       expect(description).toBe(post.data.excerpt)
-      expect(ogImage?.startsWith(`${SITE_URL}/`)).toBe(true)
+      expect(ogImage?.startsWith(`${SITE_ORIGIN}/`)).toBe(true)
 
       const ogImageData = post.data.ogImage as
         | { width?: number; height?: number; url?: string }
         | undefined
-      const expectedWidth = ogImageData?.url ? String(ogImageData.width ?? 1200) : '512'
-      const expectedHeight = ogImageData?.url ? String(ogImageData.height ?? 630) : '512'
+      const expectedWidth = ogImageData?.url
+        ? String(ogImageData.width ?? DEFAULT_OG_IMAGE_WIDTH)
+        : '512'
+      const expectedHeight = ogImageData?.url
+        ? String(ogImageData.height ?? DEFAULT_OG_IMAGE_HEIGHT)
+        : '512'
       expect(ogImageWidth).toBe(expectedWidth)
       expect(ogImageHeight).toBe(expectedHeight)
 
@@ -136,9 +151,15 @@ describe('seo metadata regression checks', () => {
       icons: Array<{ src: string }>
     }
 
-    expect(robots).toContain('Sitemap: https://decodingdisney.com/sitemap-index.xml')
-    expect(manifest.name).toBe('Decoding Disney')
+    expect(robots).toContain(`Sitemap: ${SITE_ORIGIN}/sitemap-index.xml`)
+    expect(manifest.name).toBe(SITE_NAME)
     expect(manifest.short_name).toBe('DecodingDisney')
     expect(manifest.icons.every((icon) => icon.src.startsWith('/favicon/'))).toBe(true)
+  })
+
+  it('keeps Astro site origin aligned with shared site metadata constants', () => {
+    const astroConfig = readFileSync(ASTRO_CONFIG_PATH, 'utf8')
+    const sitePattern = new RegExp(`site:\\s*['"]${escapeRegExp(SITE_ORIGIN)}['"]`)
+    expect(astroConfig).toMatch(sitePattern)
   })
 })

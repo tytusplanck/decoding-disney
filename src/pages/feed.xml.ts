@@ -1,12 +1,13 @@
 import rss from '@astrojs/rss'
 import type { APIContext } from 'astro'
-import { getAllPostsSorted } from '../lib/posts'
+import { getPublishedPostsSorted } from '../lib/posts'
+import { SITE_DESCRIPTION, SITE_NAME } from '../lib/site'
 
 export async function GET(context: APIContext) {
-  const posts = await getAllPostsSorted()
+  const posts = await getPublishedPostsSorted()
   return rss({
-    title: 'Decoding Disney',
-    description: 'Your ultimate guide to Disney parks, with tips, reviews, and insider knowledge.',
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     site: context.site!,
     items: posts.map((post) => ({
       title: post.data.title,
