@@ -31,6 +31,29 @@ Agents must follow these rules on every change:
 4. Prefer minimal, targeted changes over broad refactors.
 5. If a check fails, fix root cause before continuing.
 
+## Architecture Design Rules (Ousterhout)
+
+Agents must optimize for long-term maintainability, not short-term speed.
+
+1. Prefer deep modules with small, stable interfaces.
+2. Keep policy/derivation logic in `src/lib/**`; keep pages/layouts/components thin.
+3. Eliminate change amplification: shared constants or policy must have one owner.
+4. Enforce information hiding: callers should not need to know implementation details.
+5. If a requested change increases complexity, include a simpler alternative in handoff notes.
+
+## Canonical Module Ownership
+
+Use these files as single sources of truth:
+
+- `src/lib/site.ts`: site identity + default metadata constants.
+- `src/lib/seo.ts`: canonical URL, OG metadata, and JSON-LD derivation.
+- `src/lib/posts.ts`: post retrieval, draft filtering, sorting, static-path data.
+- `src/content/config.ts`: content schema/frontmatter validation.
+- `tests/helpers/content.ts`: test-side content filesystem parsing helpers.
+
+If logic in one of these domains appears in multiple files, refactor to the owner module
+instead of duplicating behavior.
+
 ## Required Local Commands
 
 Run from repository root:
@@ -41,6 +64,19 @@ npm run verify
 ```
 
 `npm run verify` is the canonical quality gate and must pass before handoff.
+
+## Fast Feedback by Change Type
+
+Use focused checks while iterating, then always run full `npm run verify`.
+
+- SEO/metadata changes (`src/lib/seo.ts`, `src/lib/site.ts`, layout/head/feed/post route):
+  `npm run test:seo && npm run test:artifacts`
+- Routing/content rendering changes (`src/lib/posts.ts`, `src/pages/**`):
+  `npm run test:unit && npm run test:smoke && npm run test:links`
+- Content schema/frontmatter changes (`src/content/config.ts`, post frontmatter):
+  `npm run check && npm run test:unit`
+- Tooling/lint/config changes:
+  `npm run lint && npm run check`
 
 ## What `verify` Enforces
 
@@ -98,11 +134,21 @@ If content changes were not requested, do not rewrite article voice or messaging
 - Agents must treat draft leakage as a blocking defect.
 - Home/share fallback OG image is `/og/default-og.svg`; do not point OG defaults to favicon assets.
 
+## Change Decomposition Rules
+
+History in this repo shows risk from mixed-scope changes. Keep changesets separable:
+
+1. One intent per changeset (feature, refactor, content, or dependency bump).
+2. Do not combine dependency upgrades with behavior changes unless explicitly requested.
+3. Keep mechanical moves/renames separate from behavior changes when practical.
+4. If performing a larger migration/refactor, maintain behavior parity and verify each step.
+
 ## Commit Guardrails
 
 - Pre-commit hook is enabled via Husky.
 - Staged files run through `lint-staged` (ESLint/Prettier/markdownlint where relevant).
 - Agents should still run full `npm run verify` before final handoff.
+- If creating commits, use specific messages (avoid vague labels like "minor improve" or "cleanup").
 
 ## Dependency and Tooling Policy
 
@@ -129,3 +175,5 @@ Before declaring work complete, agents must confirm:
 2. `npm run verify` passed.
 3. Any tradeoffs/limitations are documented.
 4. Files changed are clearly listed for the owner.
+5. Architectural impact is stated (complexity reduced/unchanged/increased and why).
+6. Shared-policy ownership remains centralized (no duplicated site/SEO/posts policy).
